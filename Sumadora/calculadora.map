@@ -1,0 +1,82 @@
+MPLINK 4.49, Linker
+Linker Map File - Created Sun Jan 10 21:26:28 2021
+
+                                 Section Info
+                  Section       Type    Address   Location Size(Bytes)
+                ---------  ---------  ---------  ---------  ---------
+                   .org_0       code   0x000000    program   0x000000
+                   .org_1       code   0x000000    program   0x0001d2
+.config_2007_CALCULADORA.O       code   0x002007    program   0x000002
+
+
+
+                              Program Memory Usage 
+                               Start         End      
+                           ---------   ---------      
+                            0x000000    0x0000e8      
+                            0x002007    0x002007      
+            234 out of 8454 program addresses used, program memory utilization is 2%
+
+
+
+                              Symbols - Sorted by Name
+                     Name    Address   Location    Storage File                     
+                ---------  ---------  ---------  --------- ---------                
+        ACTIVIDADRENGLONA   0x000015    program     static C:\Users\Hp 88122\Desktop\6to Semestre\Lenguajes de Interfaz\Lenguajes\Lenguajes\Sumadora\calculadora.asm
+                     CERO   0x00007c    program     static C:\Users\Hp 88122\Desktop\6to Semestre\Lenguajes de Interfaz\Lenguajes\Lenguajes\Sumadora\calculadora.asm
+                    CICLO   0x000015    program     static C:\Users\Hp 88122\Desktop\6to Semestre\Lenguajes de Interfaz\Lenguajes\Lenguajes\Sumadora\calculadora.asm
+                    CINCO   0x00005e    program     static C:\Users\Hp 88122\Desktop\6to Semestre\Lenguajes de Interfaz\Lenguajes\Lenguajes\Sumadora\calculadora.asm
+                      CLR   0x0000ba    program     static C:\Users\Hp 88122\Desktop\6to Semestre\Lenguajes de Interfaz\Lenguajes\Lenguajes\Sumadora\calculadora.asm
+            CONFIGURACION   0x000000    program     static C:\Users\Hp 88122\Desktop\6to Semestre\Lenguajes de Interfaz\Lenguajes\Lenguajes\Sumadora\calculadora.asm
+                   CUATRO   0x000058    program     static C:\Users\Hp 88122\Desktop\6to Semestre\Lenguajes de Interfaz\Lenguajes\Lenguajes\Sumadora\calculadora.asm
+                      DIV   0x000080    program     static C:\Users\Hp 88122\Desktop\6to Semestre\Lenguajes de Interfaz\Lenguajes\Lenguajes\Sumadora\calculadora.asm
+                      DOS   0x00004c    program     static C:\Users\Hp 88122\Desktop\6to Semestre\Lenguajes de Interfaz\Lenguajes\Lenguajes\Sumadora\calculadora.asm
+                    IGUAL   0x00009a    program     static C:\Users\Hp 88122\Desktop\6to Semestre\Lenguajes de Interfaz\Lenguajes\Lenguajes\Sumadora\calculadora.asm
+                      MAS   0x000092    program     static C:\Users\Hp 88122\Desktop\6to Semestre\Lenguajes de Interfaz\Lenguajes\Lenguajes\Sumadora\calculadora.asm
+                    MENOS   0x00008d    program     static C:\Users\Hp 88122\Desktop\6to Semestre\Lenguajes de Interfaz\Lenguajes\Lenguajes\Sumadora\calculadora.asm
+                  MOSTRAR   0x0000c9    program     static C:\Users\Hp 88122\Desktop\6to Semestre\Lenguajes de Interfaz\Lenguajes\Lenguajes\Sumadora\calculadora.asm
+              MOSTRAR_UNO   0x0000c5    program     static C:\Users\Hp 88122\Desktop\6to Semestre\Lenguajes de Interfaz\Lenguajes\Lenguajes\Sumadora\calculadora.asm
+                    MULTI   0x0000a4    program     static C:\Users\Hp 88122\Desktop\6to Semestre\Lenguajes de Interfaz\Lenguajes\Lenguajes\Sumadora\calculadora.asm
+                    NUEVE   0x000076    program     static C:\Users\Hp 88122\Desktop\6to Semestre\Lenguajes de Interfaz\Lenguajes\Lenguajes\Sumadora\calculadora.asm
+                  NUMEROS   0x0000dc    program     static C:\Users\Hp 88122\Desktop\6to Semestre\Lenguajes de Interfaz\Lenguajes\Lenguajes\Sumadora\calculadora.asm
+                     OCHO   0x000070    program     static C:\Users\Hp 88122\Desktop\6to Semestre\Lenguajes de Interfaz\Lenguajes\Lenguajes\Sumadora\calculadora.asm
+                   OPDIEZ   0x0000d7    program     static C:\Users\Hp 88122\Desktop\6to Semestre\Lenguajes de Interfaz\Lenguajes\Lenguajes\Sumadora\calculadora.asm
+                      POR   0x000085    program     static C:\Users\Hp 88122\Desktop\6to Semestre\Lenguajes de Interfaz\Lenguajes\Lenguajes\Sumadora\calculadora.asm
+                     SEIS   0x000064    program     static C:\Users\Hp 88122\Desktop\6to Semestre\Lenguajes de Interfaz\Lenguajes\Lenguajes\Sumadora\calculadora.asm
+                    SIETE   0x00006a    program     static C:\Users\Hp 88122\Desktop\6to Semestre\Lenguajes de Interfaz\Lenguajes\Lenguajes\Sumadora\calculadora.asm
+                    SUMA1   0x0000b8    program     static C:\Users\Hp 88122\Desktop\6to Semestre\Lenguajes de Interfaz\Lenguajes\Lenguajes\Sumadora\calculadora.asm
+                     TRES   0x000052    program     static C:\Users\Hp 88122\Desktop\6to Semestre\Lenguajes de Interfaz\Lenguajes\Lenguajes\Sumadora\calculadora.asm
+                      UNO   0x000046    program     static C:\Users\Hp 88122\Desktop\6to Semestre\Lenguajes de Interfaz\Lenguajes\Lenguajes\Sumadora\calculadora.asm
+
+
+
+                              Symbols - Sorted by Address
+                     Name    Address   Location    Storage File                     
+                ---------  ---------  ---------  --------- ---------                
+            CONFIGURACION   0x000000    program     static C:\Users\Hp 88122\Desktop\6to Semestre\Lenguajes de Interfaz\Lenguajes\Lenguajes\Sumadora\calculadora.asm
+        ACTIVIDADRENGLONA   0x000015    program     static C:\Users\Hp 88122\Desktop\6to Semestre\Lenguajes de Interfaz\Lenguajes\Lenguajes\Sumadora\calculadora.asm
+                    CICLO   0x000015    program     static C:\Users\Hp 88122\Desktop\6to Semestre\Lenguajes de Interfaz\Lenguajes\Lenguajes\Sumadora\calculadora.asm
+                      UNO   0x000046    program     static C:\Users\Hp 88122\Desktop\6to Semestre\Lenguajes de Interfaz\Lenguajes\Lenguajes\Sumadora\calculadora.asm
+                      DOS   0x00004c    program     static C:\Users\Hp 88122\Desktop\6to Semestre\Lenguajes de Interfaz\Lenguajes\Lenguajes\Sumadora\calculadora.asm
+                     TRES   0x000052    program     static C:\Users\Hp 88122\Desktop\6to Semestre\Lenguajes de Interfaz\Lenguajes\Lenguajes\Sumadora\calculadora.asm
+                   CUATRO   0x000058    program     static C:\Users\Hp 88122\Desktop\6to Semestre\Lenguajes de Interfaz\Lenguajes\Lenguajes\Sumadora\calculadora.asm
+                    CINCO   0x00005e    program     static C:\Users\Hp 88122\Desktop\6to Semestre\Lenguajes de Interfaz\Lenguajes\Lenguajes\Sumadora\calculadora.asm
+                     SEIS   0x000064    program     static C:\Users\Hp 88122\Desktop\6to Semestre\Lenguajes de Interfaz\Lenguajes\Lenguajes\Sumadora\calculadora.asm
+                    SIETE   0x00006a    program     static C:\Users\Hp 88122\Desktop\6to Semestre\Lenguajes de Interfaz\Lenguajes\Lenguajes\Sumadora\calculadora.asm
+                     OCHO   0x000070    program     static C:\Users\Hp 88122\Desktop\6to Semestre\Lenguajes de Interfaz\Lenguajes\Lenguajes\Sumadora\calculadora.asm
+                    NUEVE   0x000076    program     static C:\Users\Hp 88122\Desktop\6to Semestre\Lenguajes de Interfaz\Lenguajes\Lenguajes\Sumadora\calculadora.asm
+                     CERO   0x00007c    program     static C:\Users\Hp 88122\Desktop\6to Semestre\Lenguajes de Interfaz\Lenguajes\Lenguajes\Sumadora\calculadora.asm
+                      DIV   0x000080    program     static C:\Users\Hp 88122\Desktop\6to Semestre\Lenguajes de Interfaz\Lenguajes\Lenguajes\Sumadora\calculadora.asm
+                      POR   0x000085    program     static C:\Users\Hp 88122\Desktop\6to Semestre\Lenguajes de Interfaz\Lenguajes\Lenguajes\Sumadora\calculadora.asm
+                    MENOS   0x00008d    program     static C:\Users\Hp 88122\Desktop\6to Semestre\Lenguajes de Interfaz\Lenguajes\Lenguajes\Sumadora\calculadora.asm
+                      MAS   0x000092    program     static C:\Users\Hp 88122\Desktop\6to Semestre\Lenguajes de Interfaz\Lenguajes\Lenguajes\Sumadora\calculadora.asm
+                    IGUAL   0x00009a    program     static C:\Users\Hp 88122\Desktop\6to Semestre\Lenguajes de Interfaz\Lenguajes\Lenguajes\Sumadora\calculadora.asm
+                    MULTI   0x0000a4    program     static C:\Users\Hp 88122\Desktop\6to Semestre\Lenguajes de Interfaz\Lenguajes\Lenguajes\Sumadora\calculadora.asm
+                    SUMA1   0x0000b8    program     static C:\Users\Hp 88122\Desktop\6to Semestre\Lenguajes de Interfaz\Lenguajes\Lenguajes\Sumadora\calculadora.asm
+                      CLR   0x0000ba    program     static C:\Users\Hp 88122\Desktop\6to Semestre\Lenguajes de Interfaz\Lenguajes\Lenguajes\Sumadora\calculadora.asm
+              MOSTRAR_UNO   0x0000c5    program     static C:\Users\Hp 88122\Desktop\6to Semestre\Lenguajes de Interfaz\Lenguajes\Lenguajes\Sumadora\calculadora.asm
+                  MOSTRAR   0x0000c9    program     static C:\Users\Hp 88122\Desktop\6to Semestre\Lenguajes de Interfaz\Lenguajes\Lenguajes\Sumadora\calculadora.asm
+                   OPDIEZ   0x0000d7    program     static C:\Users\Hp 88122\Desktop\6to Semestre\Lenguajes de Interfaz\Lenguajes\Lenguajes\Sumadora\calculadora.asm
+                  NUMEROS   0x0000dc    program     static C:\Users\Hp 88122\Desktop\6to Semestre\Lenguajes de Interfaz\Lenguajes\Lenguajes\Sumadora\calculadora.asm
+
+

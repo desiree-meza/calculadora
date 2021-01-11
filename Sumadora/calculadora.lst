@@ -1,0 +1,809 @@
+MPASM  5.51                   CALCULADORA.ASM   1-10-2021  21:26:27         PAGE  1
+
+
+LOC  OBJECT CODE     LINE SOURCE TEXT
+  VALUE
+
+                      00001 ;--------------------
+                      00002 ;practica #
+                      00003 ;--------------------
+                      00004  #include <p16f877.inc>
+                      00001         LIST
+                      00002 
+                      00003 ;==========================================================================
+                      00004 ;  MPASM PIC16F877 processor include
+                      00005 ; 
+                      00006 ;  (c) Copyright 1999-2013 Microchip Technology, All rights reserved
+                      00007 ;==========================================================================
+                      00008 
+                      00540         LIST
+                      00005  list p=16f877
+2007   3D31           00006  __config 3D31
+Warning[207]: Found label after column 1. (op)
+  00000020            00007  op             EQU     0x20 
+Warning[207]: Found label after column 1. (val1)
+  00000021            00008         val1            EQU     0x21
+Warning[207]: Found label after column 1. (val2)
+  00000022            00009         val2            EQU     0x22    
+Warning[207]: Found label after column 1. (digito)
+  00000023            00010         digito  EQU     0x23    
+Warning[207]: Found label after column 1. (suma)
+  00000024            00011         suma    EQU     0x24
+Warning[207]: Found label after column 1. (temporal)
+  00000025            00012         temporal        EQU     0x25
+Warning[207]: Found label after column 1. (resultado)
+  00000026            00013         resultado       EQU     0x26
+Warning[207]: Found label after column 1. (operacion)
+  00000027            00014         operacion       EQU     0x27
+Warning[207]: Found label after column 1. (menosuno)
+  00000028            00015         menosuno        EQU     0x28
+                      00016 
+0000                  00017  org 0x00
+Warning[207]: Found label after column 1. (CONFIGURACION)
+0000                  00018  CONFIGURACION
+                      00019  ;limpia de puertos
+                      00020  ; PORTB teclado
+0000   0187           00021  clrf    PORTC 
+0001   01A0           00022  clrf   op
+0002   01A1           00023  clrf   val1
+0003   01A2           00024  clrf   val2
+0004   01A3           00025  clrf   digito
+0005   01A4           00026  clrf   suma    
+0006   01A5           00027  clrf   temporal
+0007   01A7           00028  clrf  operacion
+0008   01A6           00029  clrf   resultado
+                      00030 
+                      00031  ;cambio de bancos
+                      00032   ;cambio al banco 1
+0009   1303           00033  bcf STATUS,RP1
+000A   1683           00034  bsf STATUS,RP0
+MPASM  5.51                   CALCULADORA.ASM   1-10-2021  21:26:27         PAGE  2
+
+
+LOC  OBJECT CODE     LINE SOURCE TEXT
+  VALUE
+
+                      00035   
+                      00036   ;activamos los puertos
+000B   30F0           00037  movlw  b'11110000'
+Message[302]: Register in operand not in bank 0.  Ensure that bank bits are correct.
+000C   0086           00038  movwf  TRISB
+000D   3000           00039  movlw  b'00000000'
+Message[302]: Register in operand not in bank 0.  Ensure that bank bits are correct.
+000E   0087           00040  movwf  TRISC
+Message[302]: Register in operand not in bank 0.  Ensure that bank bits are correct.
+000F   0088           00041  movwf  TRISD
+0010   0103           00042  clrw
+                      00043 
+                      00044   ;cambio al banco 0
+0011   1303           00045  bcf STATUS,RP1
+0012   1283           00046  bcf STATUS,RP0
+                      00047   
+                      00048 ;------------------------------
+                      00049 ;-----inicio-----
+                      00050 ;------------------------------
+0013   303F           00051  movlw  b'00111111' ;cero
+0014   0088           00052  movwf  PORTD ;damos como valor inicial 0
+                      00053 
+                      00054  
+0015                  00055 CICLO
+                      00056  ;revisando actividad de las filas/renglones
+0015                  00057 ACTIVIDADRENGLONA
+0015   1406           00058  bsf    PORTB,0
+0016   1086           00059  bcf    PORTB,1
+0017   1106           00060  bcf    PORTB,2
+0018   1186           00061  bcf    PORTB,3
+0019   1A06           00062  btfsc  PORTB,4 ;columna 1
+001A   286A           00063  goto   SIETE
+001B   1A86           00064  btfsc  PORTB,5 ;columna 2
+001C   2870           00065  goto   OCHO
+001D   1B06           00066  btfsc  PORTB,6 ;colmna 3
+001E   2876           00067  goto   NUEVE
+001F   1B86           00068  btfsc  PORTB,7 ;columna 4
+0020   2880           00069  goto   DIV
+                      00070 
+                      00071 ;actividad renglon2
+0021   1006           00072  bcf    PORTB,0
+0022   1486           00073  bsf    PORTB,1
+0023   1106           00074  bcf    PORTB,2
+0024   1186           00075  bcf    PORTB,3
+0025   1A06           00076  btfsc  PORTB,4
+0026   2858           00077  goto   CUATRO
+0027   1A86           00078  btfsc  PORTB,5
+0028   285E           00079  goto   CINCO
+0029   1B06           00080  btfsc  PORTB,6
+002A   2864           00081  goto   SEIS
+002B   1B86           00082  btfsc  PORTB,7
+002C   2885           00083  goto   POR
+                      00084 
+MPASM  5.51                   CALCULADORA.ASM   1-10-2021  21:26:27         PAGE  3
+
+
+LOC  OBJECT CODE     LINE SOURCE TEXT
+  VALUE
+
+                      00085 ;activiada renglon3
+002D   1006           00086  bcf    PORTB,0
+002E   1086           00087  bcf    PORTB,1
+002F   1506           00088  bsf    PORTB,2
+0030   1186           00089  bcf    PORTB,3
+0031   1A06           00090  btfsc  PORTB,4
+0032   2846           00091  goto   UNO
+0033   1A86           00092  btfsc  PORTB,5
+0034   284C           00093  goto   DOS
+0035   1B06           00094  btfsc  PORTB,6
+0036   2852           00095  goto   TRES
+0037   1B86           00096  btfsc  PORTB,7
+0038   288D           00097  goto   MENOS
+                      00098 
+                      00099 ;actividad ultimo renglon
+0039   1006           00100  bcf    PORTB,0
+003A   1086           00101  bcf    PORTB,1
+003B   1106           00102  bcf    PORTB,2
+003C   1586           00103  bsf    PORTB,3
+003D   1A06           00104  btfsc  PORTB,4
+003E   28BA           00105  goto   CLR
+003F   1A86           00106  btfsc  PORTB,5
+0040   287C           00107  goto   CERO
+0041   1B06           00108  btfsc  PORTB,6
+0042   289A           00109  goto   IGUAL
+0043   1B86           00110  btfsc  PORTB,7
+0044   2892           00111  goto   MAS
+0045   2815           00112  goto   CICLO
+                      00113 ;numeros-----------------------------------------
+                      00114 
+0046                  00115 UNO
+0046   1A06           00116                 btfsc   PORTB,4
+0047   2846           00117                 goto $-1
+0048   3006           00118                 movlw   b'00000110'
+0049   0088           00119                 movwf   PORTD
+004A   3001           00120                 movlw   b'00000001'
+004B   2815           00121         goto CICLO
+                      00122 
+                      00123         
+004C                  00124 DOS
+004C   1A86           00125                 btfsc   PORTB,5
+004D   284C           00126                 goto $-1
+004E   305B           00127                 movlw   b'01011011' ;
+004F   0088           00128                 movwf   PORTD
+0050   3002           00129                 movlw   b'00000010'
+0051   2815           00130         goto CICLO
+                      00131 
+0052                  00132 TRES
+0052   1B06           00133                 btfsc   PORTB,6
+0053   2852           00134                 goto $-1
+0054   304F           00135                 movlw   b'01001111'
+0055   0088           00136                 movwf   PORTD
+0056   3003           00137                 movlw   b'00000011'
+MPASM  5.51                   CALCULADORA.ASM   1-10-2021  21:26:27         PAGE  4
+
+
+LOC  OBJECT CODE     LINE SOURCE TEXT
+  VALUE
+
+0057   2815           00138         goto CICLO      
+                      00139         
+0058                  00140 CUATRO
+0058   1A06           00141                 btfsc   PORTB,4
+0059   2858           00142                 goto $-1
+005A   3066           00143                 movlw   b'01100110'
+005B   0088           00144                 movwf   PORTD
+005C   3004           00145   movlw b'00000100'
+005D   2815           00146         goto CICLO
+005E                  00147 CINCO
+005E   1A86           00148                 btfsc   PORTB,5
+005F   285E           00149                 goto $-1
+0060   306D           00150                 movlw   b'01101101'
+0061   0088           00151                 movwf   PORTD
+0062   3005           00152                 movlw   b'00000101'
+0063   2815           00153         goto CICLO
+0064                  00154 SEIS
+0064   1B06           00155                 btfsc   PORTB,6
+0065   2864           00156                 goto $-1
+0066   307D           00157                 movlw   b'01111101'
+0067   0088           00158                 movwf   PORTD
+0068   3006           00159                 movlw   b'00000110'
+0069   2815           00160         goto CICLO
+006A                  00161 SIETE
+006A   1A06           00162         btfsc   PORTB,4
+006B   286A           00163                 goto $-1
+006C   3047           00164                 movlw   b'01000111'
+006D   0088           00165                 movwf   PORTD
+006E   3007           00166                 movlw   b'00000111'
+006F   2815           00167                 goto    CICLO
+0070                  00168 OCHO
+0070   1A86           00169                 btfsc   PORTB,5
+0071   2870           00170                 goto $-1
+0072   307F           00171                 movlw   b'01111111'
+0073   0088           00172                 movwf   PORTD
+0074   3008           00173                 movlw   b'00001000'
+0075   2815           00174         goto CICLO
+0076                  00175 NUEVE
+0076   1B06           00176                 btfsc   PORTB,6
+0077   2876           00177                 goto $-1
+0078   306F           00178                 movlw   b'01101111'
+0079   0088           00179                 movwf   PORTD
+007A   3009           00180                 movlw   b'00001001'
+007B   2815           00181         goto CICLO
+007C                  00182 CERO
+007C   1A86           00183                 btfsc   PORTB,5
+007D   303F           00184                 movlw   b'00111111'
+007E   0088           00185                 movwf   PORTD
+007F   2815           00186         goto    CICLO
+                      00187 
+0080                  00188 DIV
+0080   1B86           00189                 btfsc   PORTB,7
+0081   2880           00190                 goto $-1
+MPASM  5.51                   CALCULADORA.ASM   1-10-2021  21:26:27         PAGE  5
+
+
+LOC  OBJECT CODE     LINE SOURCE TEXT
+  VALUE
+
+0082   3072           00191                 movlw   b'01110010'
+0083   0087           00192                 movwf   PORTC
+0084   2815           00193         goto CICLO
+0085                  00194 POR     
+0085   1B86           00195                 btfsc   PORTB,7
+0086   2885           00196                 goto $-1
+0087   3001           00197                 movlw   d'1'
+0088   00A7           00198                 movwf   operacion
+0089   3076           00199                 movlw   b'01110110'
+008A   0087           00200                 movwf   PORTC
+008B   07A1           00201                 addwf   val1,1
+008C   2815           00202         goto CICLO
+008D                  00203 MENOS
+008D   1B86           00204                 btfsc   PORTB,7
+008E   288D           00205                 goto $-1
+008F   3040           00206                 movlw   b'01000000'
+0090   0087           00207                 movwf   PORTC
+0091   2815           00208         goto CICLO
+0092                  00209 MAS
+0092   1B86           00210                 btfsc   PORTB,7
+0093   2892           00211                 goto $-1
+0094   07A1           00212                 addwf   val1,1
+0095   3000           00213                 movlw   d'0'
+0096   00A7           00214                 movwf   operacion
+0097   3046           00215                 movlw   b'01000110'
+0098   0087           00216                 movwf   PORTC
+0099   2815           00217         goto CICLO
+                      00218 
+009A                  00219 IGUAL
+009A   1B06           00220                 btfsc   PORTB,6
+009B   289A           00221                 goto $-1
+009C   0187           00222                 clrf PORTC
+Warning[203]: Found opcode in column 1. (call)
+009D   20DC           00223 call NUMEROS
+009E   00A2           00224                 movwf   val2
+009F   00A6           00225                 movwf   resultado
+00A0   1C27           00226                 btfss           operacion,0
+00A1   28B8           00227                 goto            SUMA1
+00A2   28A4           00228                 goto            MULTI
+00A3   2815           00229         goto            CICLO
+                      00230 
+00A4                  00231 MULTI
+00A4   0103           00232                 clrw
+00A5   01A8           00233                 clrf            menosuno
+00A6   3001           00234                 movlw   d'1'
+00A7   00A8           00235                 movwf   menosuno
+00A8   0103           00236                 clrw
+00A9   0822           00237                 movf            val2,w
+00AA   20DC           00238                 call        NUMEROS
+00AB   07A6           00239                 addwf   resultado,1     ; W + resultado = resultado
+00AC   0103           00240                 clrw
+00AD   3001           00241                 movlw   d'1'                    ; W = 1
+00AE   02A1           00242                 subwf   val1,1          ; Val1 - 1 = ... -> 0
+MPASM  5.51                   CALCULADORA.ASM   1-10-2021  21:26:27         PAGE  6
+
+
+LOC  OBJECT CODE     LINE SOURCE TEXT
+  VALUE
+
+00AF   0103           00243                 clrw
+00B0   0821           00244                 movf            val1,w          ; Val1 = W
+00B1   0728           00245                 addwf   menosuno,0
+00B2   0228           00246                 subwf   menosuno,0
+00B3   1D03           00247                 btfss           STATUS,Z
+00B4   28A4           00248                 goto            MULTI
+00B5   0103           00249                 clrw
+00B6   0826           00250                 movf            resultado,w
+                      00251 
+00B7   28C9           00252                 goto            MOSTRAR
+                      00253 
+00B8                  00254 SUMA1
+00B8   0721           00255                 addwf   val1,0
+00B9   28C9           00256                 goto            MOSTRAR
+                      00257 
+00BA                  00258 CLR
+00BA   0187           00259         clrf    PORTC
+00BB   0188           00260         clrf    PORTD
+00BC   01A1           00261         clrf    val1
+00BD   01A2           00262         clrf    val2
+00BE   01A4           00263         clrf    suma
+00BF   01A5           00264         clrf    temporal        
+00C0   01A6           00265         clrf    resultado
+00C1   01A3           00266         clrf    digito
+00C2   01A7           00267         clrf    operacion
+00C3   0103           00268         clrw    
+00C4   2815           00269         goto CICLO
+                      00270 
+00C5                  00271 MOSTRAR_UNO
+00C5   0824           00272         movf            suma,w
+00C6   20DC           00273         call            NUMEROS
+00C7   0088           00274         movwf   PORTD   
+00C8   2815           00275         goto            CICLO
+                      00276 
+00C9                  00277 MOSTRAR
+00C9   00A4           00278         movwf   suma
+00CA   300A           00279         movlw   d'10'
+00CB   0224           00280         subwf   suma,w
+00CC   00A6           00281         movwf   resultado
+00CD   1C03           00282         btfss           STATUS,C
+00CE   28C5           00283         goto            MOSTRAR_UNO
+00CF   1903           00284         btfsc           STATUS,Z
+00D0   28D7           00285         goto            OPDIEZ
+                      00286         
+00D1   3006           00287         movlw           b'00000110'
+00D2   0087           00288         movwf           PORTC
+00D3   0826           00289         movf                    resultado,0
+00D4   20DC           00290         call                    NUMEROS
+00D5   0088           00291         movwf           PORTD
+00D6   2815           00292         goto                    CICLO
+                      00293 
+00D7                  00294 OPDIEZ
+00D7   3006           00295         movlw           b'00000110'
+MPASM  5.51                   CALCULADORA.ASM   1-10-2021  21:26:27         PAGE  7
+
+
+LOC  OBJECT CODE     LINE SOURCE TEXT
+  VALUE
+
+00D8   0087           00296         movwf           PORTC
+00D9   303F           00297         movlw           b'00111111'
+00DA   0088           00298         movwf           PORTD
+00DB   2815           00299         goto                    CICLO
+                      00300 
+                      00301 
+00DC                  00302 NUMEROS
+00DC   0782           00303  addwf  PCL     ,f
+00DD   343F           00304  retlw  b'00111111' ;0 
+00DE   3406           00305  retlw  b'00000110' ;1
+00DF   345B           00306  retlw  b'01011011' ;2
+00E0   344F           00307  retlw  b'01001111' ;3
+00E1   3466           00308  retlw  b'01100110' ;4
+00E2   346D           00309  retlw  b'01101101' ;5
+00E3   347D           00310  retlw  b'01111101' ;6
+00E4   3407           00311  retlw  b'00000111' ;7
+00E5   347F           00312  retlw  b'01111111' ;8
+00E6   346F           00313  retlw  b'01101111' ;9 --> 01001
+00E7   343F           00314  retlw  b'00111111' ;0
+00E8   0008           00315  return
+                      00316 
+Warning[205]: Found directive in column 1. (end)
+                      00317 end
+MPASM  5.51                   CALCULADORA.ASM   1-10-2021  21:26:27         PAGE  8
+
+
+SYMBOL TABLE
+  LABEL                             VALUE 
+
+ACKDT                             00000005
+ACKEN                             00000004
+ACKSTAT                           00000006
+ACTIVIDADRENGLONA                 00000015
+ADCON0                            0000001F
+ADCON1                            0000009F
+ADCS0                             00000006
+ADCS1                             00000007
+ADDEN                             00000003
+ADFM                              00000007
+ADIE                              00000006
+ADIF                              00000006
+ADON                              00000000
+ADRESH                            0000001E
+ADRESL                            0000009E
+BCLIE                             00000003
+BCLIF                             00000003
+BF                                00000000
+BRGH                              00000002
+C                                 00000000
+CCP1CON                           00000017
+CCP1IE                            00000002
+CCP1IF                            00000002
+CCP1M0                            00000000
+CCP1M1                            00000001
+CCP1M2                            00000002
+CCP1M3                            00000003
+CCP1X                             00000005
+CCP1Y                             00000004
+CCP2CON                           0000001D
+CCP2IE                            00000000
+CCP2IF                            00000000
+CCP2M0                            00000000
+CCP2M1                            00000001
+CCP2M2                            00000002
+CCP2M3                            00000003
+CCP2X                             00000005
+CCP2Y                             00000004
+CCPR1                             00000015
+CCPR1H                            00000016
+CCPR1L                            00000015
+CCPR2                             0000001B
+CCPR2H                            0000001C
+CCPR2L                            0000001B
+CERO                              0000007C
+CHS0                              00000003
+CHS1                              00000004
+CHS2                              00000005
+CICLO                             00000015
+CINCO                             0000005E
+CKE                               00000006
+CKP                               00000004
+CLR                               000000BA
+MPASM  5.51                   CALCULADORA.ASM   1-10-2021  21:26:27         PAGE  9
+
+
+SYMBOL TABLE
+  LABEL                             VALUE 
+
+CONFIGURACION                     00000000
+CREN                              00000004
+CSRC                              00000007
+CUATRO                            00000058
+D                                 00000005
+DATA_ADDRESS                      00000005
+DC                                00000001
+DIV                               00000080
+DOS                               0000004C
+D_A                               00000005
+D_NOT_A                           00000005
+EEADR                             0000010D
+EEADRH                            0000010F
+EECON1                            0000018C
+EECON2                            0000018D
+EEDATA                            0000010C
+EEDATH                            0000010E
+EEIE                              00000004
+EEIF                              00000004
+EEPGD                             00000007
+F                                 00000001
+FERR                              00000002
+FSR                               00000004
+GCEN                              00000007
+GIE                               00000007
+GO                                00000002
+GO_DONE                           00000002
+GO_NOT_DONE                       00000002
+I2C_DATA                          00000005
+I2C_READ                          00000002
+I2C_START                         00000003
+I2C_STOP                          00000004
+IBF                               00000007
+IBOV                              00000005
+IGUAL                             0000009A
+INDF                              00000000
+INTCON                            0000000B
+INTE                              00000004
+INTEDG                            00000006
+INTF                              00000001
+IRP                               00000007
+MAS                               00000092
+MENOS                             0000008D
+MOSTRAR                           000000C9
+MOSTRAR_UNO                       000000C5
+MULTI                             000000A4
+NOT_A                             00000005
+NOT_ADDRESS                       00000005
+NOT_BO                            00000000
+NOT_BOR                           00000000
+NOT_DONE                          00000002
+NOT_PD                            00000003
+NOT_POR                           00000001
+MPASM  5.51                   CALCULADORA.ASM   1-10-2021  21:26:27         PAGE 10
+
+
+SYMBOL TABLE
+  LABEL                             VALUE 
+
+NOT_RBPU                          00000007
+NOT_RC8                           00000006
+NOT_T1SYNC                        00000002
+NOT_TO                            00000004
+NOT_TX8                           00000006
+NOT_W                             00000002
+NOT_WRITE                         00000002
+NUEVE                             00000076
+NUMEROS                           000000DC
+OBF                               00000006
+OCHO                              00000070
+OERR                              00000001
+OPDIEZ                            000000D7
+OPTION_REG                        00000081
+P                                 00000004
+PCFG0                             00000000
+PCFG1                             00000001
+PCFG2                             00000002
+PCFG3                             00000003
+PCL                               00000002
+PCLATH                            0000000A
+PCON                              0000008E
+PEIE                              00000006
+PEN                               00000002
+PIE1                              0000008C
+PIE2                              0000008D
+PIR1                              0000000C
+PIR2                              0000000D
+POR                               00000085
+PORTA                             00000005
+PORTB                             00000006
+PORTC                             00000007
+PORTD                             00000008
+PORTE                             00000009
+PR2                               00000092
+PS0                               00000000
+PS1                               00000001
+PS2                               00000002
+PSA                               00000003
+PSPIE                             00000007
+PSPIF                             00000007
+PSPMODE                           00000004
+R                                 00000002
+RA0                               00000000
+RA1                               00000001
+RA2                               00000002
+RA3                               00000003
+RA4                               00000004
+RA5                               00000005
+RB0                               00000000
+RB1                               00000001
+RB2                               00000002
+RB3                               00000003
+MPASM  5.51                   CALCULADORA.ASM   1-10-2021  21:26:27         PAGE 11
+
+
+SYMBOL TABLE
+  LABEL                             VALUE 
+
+RB4                               00000004
+RB5                               00000005
+RB6                               00000006
+RB7                               00000007
+RBIE                              00000003
+RBIF                              00000000
+RC0                               00000000
+RC1                               00000001
+RC2                               00000002
+RC3                               00000003
+RC4                               00000004
+RC5                               00000005
+RC6                               00000006
+RC7                               00000007
+RC8_9                             00000006
+RC9                               00000006
+RCD8                              00000000
+RCEN                              00000003
+RCIE                              00000005
+RCIF                              00000005
+RCREG                             0000001A
+RCSTA                             00000018
+RD                                00000000
+RD0                               00000000
+RD1                               00000001
+RD2                               00000002
+RD3                               00000003
+RD4                               00000004
+RD5                               00000005
+RD6                               00000006
+RD7                               00000007
+RE0                               00000000
+RE1                               00000001
+RE2                               00000002
+READ_WRITE                        00000002
+RP0                               00000005
+RP1                               00000006
+RSEN                              00000001
+RX9                               00000006
+RX9D                              00000000
+R_NOT_W                           00000002
+R_W                               00000002
+S                                 00000003
+SEIS                              00000064
+SEN                               00000000
+SIETE                             0000006A
+SMP                               00000007
+SPBRG                             00000099
+SPEN                              00000007
+SREN                              00000005
+SSPADD                            00000093
+SSPBUF                            00000013
+SSPCON                            00000014
+MPASM  5.51                   CALCULADORA.ASM   1-10-2021  21:26:27         PAGE 12
+
+
+SYMBOL TABLE
+  LABEL                             VALUE 
+
+SSPCON2                           00000091
+SSPEN                             00000005
+SSPIE                             00000003
+SSPIF                             00000003
+SSPM0                             00000000
+SSPM1                             00000001
+SSPM2                             00000002
+SSPM3                             00000003
+SSPOV                             00000006
+SSPSTAT                           00000094
+STATUS                            00000003
+SUMA1                             000000B8
+SYNC                              00000004
+T0CS                              00000005
+T0IE                              00000005
+T0IF                              00000002
+T0SE                              00000004
+T1CKPS0                           00000004
+T1CKPS1                           00000005
+T1CON                             00000010
+T1INSYNC                          00000002
+T1OSCEN                           00000003
+T1SYNC                            00000002
+T2CKPS0                           00000000
+T2CKPS1                           00000001
+T2CON                             00000012
+TMR0                              00000001
+TMR0IE                            00000005
+TMR0IF                            00000002
+TMR1                              0000000E
+TMR1CS                            00000001
+TMR1H                             0000000F
+TMR1IE                            00000000
+TMR1IF                            00000000
+TMR1L                             0000000E
+TMR1ON                            00000000
+TMR2                              00000011
+TMR2IE                            00000001
+TMR2IF                            00000001
+TMR2ON                            00000002
+TOUTPS0                           00000003
+TOUTPS1                           00000004
+TOUTPS2                           00000005
+TOUTPS3                           00000006
+TRES                              00000052
+TRISA                             00000085
+TRISA0                            00000000
+TRISA1                            00000001
+TRISA2                            00000002
+TRISA3                            00000003
+TRISA4                            00000004
+TRISA5                            00000005
+TRISB                             00000086
+MPASM  5.51                   CALCULADORA.ASM   1-10-2021  21:26:27         PAGE 13
+
+
+SYMBOL TABLE
+  LABEL                             VALUE 
+
+TRISB0                            00000000
+TRISB1                            00000001
+TRISB2                            00000002
+TRISB3                            00000003
+TRISB4                            00000004
+TRISB5                            00000005
+TRISB6                            00000006
+TRISB7                            00000007
+TRISC                             00000087
+TRISC0                            00000000
+TRISC1                            00000001
+TRISC2                            00000002
+TRISC3                            00000003
+TRISC4                            00000004
+TRISC5                            00000005
+TRISC6                            00000006
+TRISC7                            00000007
+TRISD                             00000088
+TRISD0                            00000000
+TRISD1                            00000001
+TRISD2                            00000002
+TRISD3                            00000003
+TRISD4                            00000004
+TRISD5                            00000005
+TRISD6                            00000006
+TRISD7                            00000007
+TRISE                             00000089
+TRISE0                            00000000
+TRISE1                            00000001
+TRISE2                            00000002
+TRMT                              00000001
+TX8_9                             00000006
+TX9                               00000006
+TX9D                              00000000
+TXD8                              00000000
+TXEN                              00000005
+TXIE                              00000004
+TXIF                              00000004
+TXREG                             00000019
+TXSTA                             00000098
+UA                                00000001
+UNO                               00000046
+W                                 00000000
+WCOL                              00000007
+WR                                00000001
+WREN                              00000002
+WRERR                             00000003
+Z                                 00000002
+_BODEN_OFF                        00003FBF
+_BODEN_ON                         00003FFF
+_BOREN_OFF                        00003FBF
+_BOREN_ON                         00003FFF
+_CONFIG                           00002007
+MPASM  5.51                   CALCULADORA.ASM   1-10-2021  21:26:27         PAGE 14
+
+
+SYMBOL TABLE
+  LABEL                             VALUE 
+
+_CPD_OFF                          00003FFF
+_CPD_ON                           00003EFF
+_CP_ALL                           00000FCF
+_CP_HALF                          00001FDF
+_CP_OFF                           00003FFF
+_CP_UPPER_256                     00002FEF
+_DEBUG_OFF                        00003FFF
+_DEBUG_ON                         000037FF
+_DEVID1                           00002006
+_FOSC_EXTRC                       00003FFF
+_FOSC_HS                          00003FFE
+_FOSC_LP                          00003FFC
+_FOSC_XT                          00003FFD
+_HS_OSC                           00003FFE
+_IDLOC0                           00002000
+_IDLOC1                           00002001
+_IDLOC2                           00002002
+_IDLOC3                           00002003
+_LP_OSC                           00003FFC
+_LVP_OFF                          00003F7F
+_LVP_ON                           00003FFF
+_PWRTE_OFF                        00003FFF
+_PWRTE_ON                         00003FF7
+_RC_OSC                           00003FFF
+_WDTE_OFF                         00003FFB
+_WDTE_ON                          00003FFF
+_WDT_OFF                          00003FFB
+_WDT_ON                           00003FFF
+_WRT_ENABLE_OFF                   00003DFF
+_WRT_ENABLE_ON                    00003FFF
+_WRT_OFF                          00003DFF
+_WRT_ON                           00003FFF
+_XT_OSC                           00003FFD
+__16F877                          00000001
+digito                            00000023
+menosuno                          00000028
+op                                00000020
+operacion                         00000027
+resultado                         00000026
+suma                              00000024
+temporal                          00000025
+val1                              00000021
+val2                              00000022
+MPASM  5.51                   CALCULADORA.ASM   1-10-2021  21:26:27         PAGE 15
+
+
+MEMORY USAGE MAP ('X' = Used,  '-' = Unused)
+
+
+0000 : XXXXXXXXXXXXXXXX XXXXXXXXXXXXXXXX XXXXXXXXXXXXXXXX XXXXXXXXXXXXXXXX
+0040 : XXXXXXXXXXXXXXXX XXXXXXXXXXXXXXXX XXXXXXXXXXXXXXXX XXXXXXXXXXXXXXXX
+0080 : XXXXXXXXXXXXXXXX XXXXXXXXXXXXXXXX XXXXXXXXXXXXXXXX XXXXXXXXXXXXXXXX
+00C0 : XXXXXXXXXXXXXXXX XXXXXXXXXXXXXXXX XXXXXXXXX------- ----------------
+2000 : -------X-------- ---------------- ---------------- ----------------
+
+All other memory blocks unused.
+
+Program Memory Words Used:   233
+Program Memory Words Free:  7959
+
+
+Errors   :     0
+Warnings :    12 reported,     0 suppressed
+Messages :     3 reported,     0 suppressed
+
+
